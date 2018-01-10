@@ -14,6 +14,7 @@ $(document).ready(function() {
   // Create a variable to reference the database.
   var database = firebase.database();
 
+
   $("#submit-button").on("click", function(event) {
          // Prevent the page from refreshing
          event.preventDefault();
@@ -32,33 +33,54 @@ $(document).ready(function() {
            frequency: frequency,
            dateAdded: firebase.database.ServerValue.TIMESTAMP
          });
-         // form.empty();
+         document.getElementById("train-inputs").reset();
        });
 
 
    // Firebase watcher + initial loader
    database.ref().on("child_added", function(childSnapshot) {
 
-     // Log everything that's coming out of snapshot
-     console.log(childSnapshot.val().trainName);
-     console.log(childSnapshot.val().trainDestination);
-     console.log(childSnapshot.val().firstTrainTime);
-     console.log(childSnapshot.val().frequency);
+    // Log everything that's coming out of snapshot
+    console.log(childSnapshot.val().trainName);
+    console.log(childSnapshot.val().trainDestination);
+    console.log(childSnapshot.val().firstTrainTime);
+    console.log(childSnapshot.val().frequency);
 
-     // Formula to get next arrival time based on firstTrainTime, frequency and current time
+    var firstTrainTime = childSnapshot.val().firstTrainTime;
+    var frequency = childSnapshot.val().frequency;
 
+    // First Time (pushed back 1 year to make sure it comes before current time)
+    var firstTimeConverted = moment(firstTrainTime, "hh:mm").subtract(1, "years");
+    console.log(firstTimeConverted);
 
-     // Formula to get next arrival time based on firstTrainTime, frequency and current time
-     // var minutesAway =
+    // Get current time
+    var currentTime = moment();
+    console.log("CURRENT TIME: " + moment(currentTime).format("hh:mm"));
 
-     // Change the table rows inside the train schedule to reflect the stored values
-     $("#train-table").append("<div class='row train-schedule'>").append("<div class='col-md-3 train-name'>" + childSnapshot.val().trainName + "</div><div class='col-md-2 destination'>" + childSnapshot.val().trainDestination +
-     "</div><div class='col-md-2 frequency'>" + childSnapshot.val().frequency + "</div></div></li>");
+    // Difference between the times
+    var diffTime = moment().diff(moment(firstTimeConverted), "minutes");
+    console.log("DIFFERENCE IN TIME: " + diffTime);
 
-   // Handle the errors
-   }, function(errorObject) {
+    // Time apart (remainder)
+    var tRemainder = diffTime % frequency;
+    console.log(tRemainder);
+
+    // Minute Until Train
+    var tMinutesTillTrain = frequency - tRemainder;
+    console.log("MINUTES TILL TRAIN: " + tMinutesTillTrain);
+
+    // Next Train
+    var nextArrival = moment().add(tMinutesTillTrain, "minutes");
+    console.log("ARRIVAL TIME: " + moment(nextArrival).format("hh:mm"));
+
+    // Change the table rows inside the train schedule to reflect the stored values
+    $("#train-table").append("<div class='row train-schedule'>").append("<div class='col-md-3 train-name'>" + childSnapshot.val().trainName + "</div><div class='col-md-2 destination'>" + childSnapshot.val().trainDestination +
+    "</div><div class='col-md-2 frequency'>" + childSnapshot.val().frequency + "</div><div class='col-md-2 next-arrival'>" + moment(nextArrival).format("hh:mm") + "</div><div class='col-md-2 minutes-away'>" + tMinutesTillTrain + "</div></div></li>");
+
+    // Handle the errors
+    }, function(errorObject) {
      console.log("Errors handled: " + errorObject.code);
-   });
+    });
 
 
 
