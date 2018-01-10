@@ -2,7 +2,7 @@
   background-color: #3c4047;
   color: #ffffff;
   text-align: center;
-  padding: 20px;
+  padding: 10px 0px 40px 0px;
 }
 
 h1 {
@@ -64,7 +64,6 @@ form {
   background-color: #ededed;
 }
 
-#train-image {
-  position: relative;
-  float: left;
+.train-schedule {
+  padding: 5px 0px 5px 0px;
 }

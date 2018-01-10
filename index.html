@@ -19,13 +19,13 @@
 
   <!-- Firebase -->
   <script src="https://www.gstatic.com/firebasejs/4.8.1/firebase.js"></script>
+
 </head>
 <body>
   <div class = "container-fluid header">
       <div class = "row">
-        <img src="assets/images/toy-train-image.png" width="120" id="train-image"><br>
         <h1>All Aboard</h1>
-        <h2>Wherever your journey takes you, our trains get you there.</h2>
+        <h2>Yes, train travel does still exist.</h2>
       </div>
   </div>
 
@@ -36,7 +36,7 @@
           Current Train Schedule
         </div>
         <div class = "card-body">
-          <ul class="list-group list-group-flush">
+          <ul class="list-group list-group-flush" id="train-table">
 
               <li class="list-group-item" id="table-headers">
                 <div class="row">
@@ -46,16 +46,6 @@
                   <div class="col-md-2 next-arrival">Next Arrival</div>
                   <div class="col-md-3 minutes-away">Minutes Away</div>
               </div>
-              </li>
-
-              <li class="list-group-item table-item">
-                <div class="row">
-                  <div class="col-md-3 train-name">My First Train</div>
-                  <div class="col-md-2 destination">Anywhere but down</div>
-                  <div class="col-md-2 frequency">Often</div>
-                  <div class="col-md-2 next-arrival">When it gets here</div>
-                  <div class="col-md-3 minutes-away">23</div>
-                </div>
               </li>
 
 
@@ -98,8 +88,8 @@
   <!--Javascript file -->
   <script type="text/javascript" src="assets/javascript/logic.js"></script>
 
-  <!-- Moment.js file -->
-  <script type="text/javascript" src="assets/javascript/logic.js"></script>
+  <!-- Link to Moment.js -->
+  <script src="https://cdn.jsdelivr.net/momentjs/2.12.0/moment.min.js"></script>
 
 </body>
 </html>
